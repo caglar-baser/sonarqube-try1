@@ -41,11 +41,6 @@ class AwsSonarqubeRunnerStack(cdk.Stack):
                 ec2.Port.tcp(9000)
             )
 
-        security_group.add_ingress_rule(
-                ec2.Peer.any_ipv4(),
-                ec2.Port.tcp(80)
-            )
-
         
         task_definiton = ecs.FargateTaskDefinition(self, "Taskdef",
             memory_limit_mib = 2048,

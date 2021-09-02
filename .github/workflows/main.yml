@@ -6,28 +6,32 @@ jobs:
     steps:
     
     
-      - name: cdk synth
-        uses: youyo/aws-cdk-github-actions@v2
+      - name: Checkout
+        uses: actions/checkout@v2
+
+
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          cdk_subcommand: 'synth'
-          cdk_version: '1.16.2'
-          working_dir: 'sonarqube-try1/'
-        env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: 'eu-central-1'
 
+      - name: install npm
+        run: 'sudo apt update -y && sudo apt install nodejs npm -y'
 
-      - name: cdk deploy
-        uses: youyo/aws-cdk-github-actions@v2
-        with:
-          cdk_subcommand: 'deploy'
-          cdk_stack: 'SonarQubeImpNew'
-          cdk_args: '--require-approval never'
-          actions_comment: false
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: 'eu-central-1'
+      - name: Install AWS CDK
+        run: 'sudo npm install -g aws-cdk'
 
-      
+      - name: Install Requirements
+        run: 'pip3 install -r requirements.txt'
+        working-directory: aws_sonarqube_runner
+
+      - name: CDK Synth
+        run: cdk synth
+        working-directory: aws_sonarqube_runner
+
+      - name: CDK Deploy
+        run: cdk deploy
+        working-directory: aws_sonarqube_runner

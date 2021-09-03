@@ -8,29 +8,30 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-central-1
 
 
 
-      - name: install npm
-        run: 'sudo apt update -y && sudo apt install nodejs npm -y'
+      #- name: install npm
+       # run: 'sudo apt update -y && sudo apt install nodejs npm -y'
 
-      - name: Install AWS CDK
-        run: 'sudo npm install -g aws-cdk'
+      #- name: Install AWS CDK
+       # run: 'sudo npm install -g aws-cdk'
 
-      - name: Install Requirements
-        run: 'pip3 install -r requirements.txt'
+      #- name: Install Requirements
+       # run: 'pip3 install -r requirements.txt'
         #working-directory: aws_sonarqube_runner
 
       #- name: CDK Synth
        # run: cdk synth
         #working-directory: aws_sonarqube_runner
 
-      - name: CDK Deploy
-        run: cdk deploy --require-approval never
-        #working-directory: aws_sonarqube_runner
+      - name: cdk deploy
+          uses: youyo/aws-cdk-github-actions@v2
+          with:
+            cdk_subcommand: 'deploy'
+            cdk_args: '--require-approval never'
+            actions_comment: false
+          env:
+            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            AWS_DEFAULT_REGION: 'eu-central-1'

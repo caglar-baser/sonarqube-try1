@@ -25,12 +25,12 @@ jobs:
 
       - name: Install Requirements
         run: 'pip3 install -r requirements.txt'
-        working-directory: aws_sonarqube_runner
+        #working-directory: aws_sonarqube_runner
 
-      - name: CDK Synth
-        run: cdk synth
-        working-directory: aws_sonarqube_runner
+      #- name: CDK Synth
+       # run: cdk synth
+        #working-directory: aws_sonarqube_runner
 
       - name: CDK Deploy
-        run: cdk deploy
-        working-directory: aws_sonarqube_runner
+        run: cdk deploy --require-approval never
+        #working-directory: aws_sonarqube_runner

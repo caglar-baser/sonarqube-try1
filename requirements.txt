@@ -1,2 +1,2 @@
-aws_cdk
 -e .
+aws_cdk
